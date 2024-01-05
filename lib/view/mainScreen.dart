@@ -1,7 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:meme_app/controller/fetchMeme.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  String imgUrl = "";
+
+  @override
+  void initState() {
+    super.initState();
+    UpdateImg();
+  }
+
+  void UpdateImg() async {
+    String getImageUrl = await FetchMeme.fetchNewMeme();
+    setState(() {
+      imgUrl = getImageUrl;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +48,14 @@ class MainScreen extends StatelessWidget {
             SizedBox(
               height: 30,
             ),
-            Image.network(
-                "https://images.pexels.com/photos/207983/pexels-photo-207983.jpeg?auto=compress&cs=tinysrgb&w=600"),
+            Image.network(imgUrl),
             SizedBox(
               height: 20,
             ),
             ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  UpdateImg();
+                },
                 child: Container(
                     height: 50,
                     width: 150,
